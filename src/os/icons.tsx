@@ -224,6 +224,46 @@ function Info({ size = 16 }: P) {
   )
 }
 
+
+function Speaker({ size = 16 }: P) {
+  return (
+    <svg {...base(size)}>
+      <path d="M2 6h3l4-3v10L5 10H2z" fill="#c0c0c0" stroke="#000" />
+      <path d="M11 5.5c1.6 1.4 1.6 4.6 0 6" fill="none" stroke="#000" />
+      <path d="M13 3.5c2.8 2.4 2.8 7.6 0 10" fill="none" stroke="#000" />
+    </svg>
+  )
+}
+
+function SpeakerMuted({ size = 16 }: P) {
+  return (
+    <svg {...base(size)}>
+      <path d="M2 6h3l4-3v10L5 10H2z" fill="#c0c0c0" stroke="#000" />
+      <path d="M11 5l4 6M15 5l-4 6" fill="none" stroke="#c00" strokeWidth="1.4" />
+    </svg>
+  )
+}
+
+
+function Shutdown({ size = 16 }: P) {
+  return (
+    <svg {...base(size)}>
+      <circle cx="8" cy="9" r="5.5" fill="none" stroke="#000" strokeWidth="1.6" />
+      <rect x="7.1" y="1.5" width="1.8" height="6" fill="#000" />
+      <path d="M4 5.2A6 6 0 0 0 8 15a6 6 0 0 0 4-9.8" fill="none" stroke="#c00" strokeWidth="1.4" />
+    </svg>
+  )
+}
+
+function Refresh({ size = 16 }: P) {
+  return (
+    <svg {...base(size)}>
+      <path d="M13 8a5 5 0 1 1-1.6-3.7" fill="none" stroke="#040" strokeWidth="1.6" />
+      <path d="M13 2v3.5h-3.5" fill="none" stroke="#040" strokeWidth="1.6" />
+    </svg>
+  )
+}
+
 const MAP: Record<IconName, (p: P) => React.ReactElement> = {
   folder: Folder,
   folderOpen: FolderOpen,
@@ -243,6 +283,10 @@ const MAP: Record<IconName, (p: P) => React.ReactElement> = {
   recycle: Recycle,
   settings: Settings,
   info: Info,
+  speaker: Speaker,
+  speakerMuted: SpeakerMuted,
+  shutdown: Shutdown,
+  refresh: Refresh,
 }
 
 export function Icon({ name, size = 16 }: { name: IconName; size?: number }) {

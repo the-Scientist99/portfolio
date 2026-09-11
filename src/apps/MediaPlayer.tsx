@@ -1,11 +1,12 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
+import { blip, ensure, master } from '../os/audio'
 
 /**
  * A chiptune generated with oscillators rather than a shipped audio file:
- * no binary in the repo, no sample licence, and the visualizer reads the
- * same graph it plays through.
+ * no binary in the repo, no sample licence.
  *
- * Never autoplays. Browsers block it anyway, and it would be rude.
+ * Volume lives in the taskbar tray, not here — one mixer for the whole OS.
+ * This never autoplays.
  */
 
 // Semitone offsets from A4 (440Hz). -1 is a rest.
@@ -23,44 +24,20 @@ const hz = (semitone: number) => 440 * Math.pow(2, semitone / 12)
 
 export function MediaPlayer() {
   const [playing, setPlaying] = useState(false)
-  const [volume, setVolume] = useState(0.4)
   const [step, setStep] = useState(0)
 
-  const ctxRef = useRef<AudioContext | null>(null)
-  const gainRef = useRef<GainNode | null>(null)
   const analyserRef = useRef<AnalyserNode | null>(null)
   const timerRef = useRef<number | null>(null)
   const stepRef = useRef(0)
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const rafRef = useRef<number | null>(null)
 
-  // Tear the audio graph down when the window closes.
+  // Stop the sequencer when the window closes. The audio context itself is
+  // shared and outlives this component, so it is deliberately not closed.
   useEffect(() => () => {
     if (timerRef.current !== null) window.clearInterval(timerRef.current)
     if (rafRef.current !== null) cancelAnimationFrame(rafRef.current)
-    void ctxRef.current?.close()
-  }, [])
-
-  useEffect(() => {
-    if (gainRef.current && ctxRef.current) {
-      gainRef.current.gain.setTargetAtTime(volume, ctxRef.current.currentTime, 0.01)
-    }
-  }, [volume])
-
-  const blip = useCallback((
-    ctx: AudioContext, dest: AudioNode, freq: number,
-    type: OscillatorType, length: number, level: number,
-  ) => {
-    const osc = ctx.createOscillator()
-    const env = ctx.createGain()
-    osc.type = type
-    osc.frequency.setValueAtTime(freq, ctx.currentTime)
-    env.gain.setValueAtTime(0, ctx.currentTime)
-    env.gain.linearRampToValueAtTime(level, ctx.currentTime + 0.008)
-    env.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + length)
-    osc.connect(env).connect(dest)
-    osc.start()
-    osc.stop(ctx.currentTime + length + 0.02)
+    analyserRef.current?.disconnect()
   }, [])
 
   const draw = useCallback(() => {
@@ -99,39 +76,33 @@ export function MediaPlayer() {
   }, [])
 
   const play = useCallback(() => {
-    // The AudioContext is created inside the click handler so the browser's
-    // autoplay policy lets it start.
-    let ctx = ctxRef.current
-    if (!ctx) {
-      ctx = new AudioContext()
-      const gain = ctx.createGain()
+    // Called from a click, so this is a legal moment to start audio.
+    const ctx = ensure()
+    const dest = master()
+    if (!ctx || !dest) return
+
+    // Tap the master bus for the visualizer without altering what is heard.
+    if (!analyserRef.current) {
       const analyser = ctx.createAnalyser()
       analyser.fftSize = 256
-      gain.gain.value = volume
-      gain.connect(analyser).connect(ctx.destination)
-      ctxRef.current = ctx
-      gainRef.current = gain
+      dest.connect(analyser)
       analyserRef.current = analyser
     }
-    void ctx.resume()
-
-    const audioCtx = ctx
-    const dest = gainRef.current!
 
     timerRef.current = window.setInterval(() => {
       const i = stepRef.current % LEAD.length
       const lead = LEAD[i]!
       const bass = BASS[i]!
-      if (lead >= 0) blip(audioCtx, dest, hz(lead), 'square', 0.16, 0.25)
-      if (bass >= 0) blip(audioCtx, dest, hz(bass), 'triangle', 0.22, 0.32)
-      if (i % 4 === 0) blip(audioCtx, dest, 90, 'sawtooth', 0.06, 0.18)
+      if (lead >= 0) blip(hz(lead), 'square', 0.16, 0.25)
+      if (bass >= 0) blip(hz(bass), 'triangle', 0.22, 0.32)
+      if (i % 4 === 0) blip(90, 'sawtooth', 0.06, 0.18)
       stepRef.current++
       setStep(stepRef.current)
     }, STEP_MS)
 
     setPlaying(true)
     rafRef.current = requestAnimationFrame(draw)
-  }, [blip, draw, volume])
+  }, [draw])
 
   const bar = Math.floor((step % LEAD.length) / 4) + 1
 
@@ -150,15 +121,7 @@ export function MediaPlayer() {
           aria-label={playing ? 'Stop' : 'Play'}>
           {playing ? '■' : '▶'}
         </button>
-        <label style={{ display: 'flex', alignItems: 'center', gap: 5, flex: 1 }}>
-          Vol
-          <input
-            type="range" min={0} max={100} value={Math.round(volume * 100)}
-            onChange={(e) => setVolume(Number(e.target.value) / 100)}
-            style={{ flex: 1, minWidth: 70 }}
-            aria-label="Volume"
-          />
-        </label>
+        <span style={{ color: '#444' }}>Volume is in the taskbar tray.</span>
       </div>
 
       <div className="statusbar">

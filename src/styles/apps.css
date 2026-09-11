@@ -86,9 +86,11 @@
   background: #fff;
   border-top: 1px solid var(--shadow);
   border-left: 1px solid var(--shadow);
-  font-family: "Courier New", Courier, monospace;
-  font-size: 12px;
-  line-height: 1.45;
+  font-family: Menlo, Consolas, "DejaVu Sans Mono", monospace;
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1.55;
+  color: #000;
   white-space: pre-wrap;
   user-select: text;
   cursor: auto;
@@ -105,9 +107,11 @@
   border-left: 1px solid var(--shadow);
   border-bottom: 1px solid var(--light);
   border-right: 1px solid var(--light);
-  font-family: "Courier New", Courier, monospace;
-  font-size: 12px;
-  line-height: 1.4;
+  font-family: Menlo, Consolas, "DejaVu Sans Mono", monospace;
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1.5;
+  color: #000;
   cursor: auto;
 }
 

@@ -255,3 +255,105 @@
 
   .start-menu { left: 0; right: 0; min-width: 0; }
 }
+
+/* ── Volume popup ─────────────────────────────────────────────────────── */
+
+.volume-popup {
+  position: absolute;
+  right: 2px;
+  bottom: var(--taskbar-h);
+  z-index: 10001;
+  width: 66px;
+  padding: 7px 5px 6px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+}
+
+.volume-label { font-weight: bold; }
+
+/* 98.css's `.is-vertical` is 150px tall by default and offsets itself with a
+   translateY(50%); shrink it and absorb the offset with margin so the popup
+   stays taskbar-sized. */
+.volume-slider.is-vertical {
+  height: 104px;
+  margin: 4px 0 -50px;
+}
+
+.volume-slider.is-vertical > input[type='range'] {
+  width: 104px;
+}
+
+.volume-value {
+  min-height: 13px;
+  font-family: "Courier New", monospace;
+}
+
+.volume-mute {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  align-self: flex-start;
+}
+
+/* ── Desktop context menu ─────────────────────────────────────────────── */
+
+.context-menu {
+  position: fixed;
+  z-index: 10002;
+  min-width: 148px;
+  padding: 2px;
+  display: flex;
+  flex-direction: column;
+}
+
+.context-group-label {
+  padding: 3px 6px 1px;
+  color: #444;
+  font-weight: bold;
+}
+
+.context-menu .start-item { padding: 4px 20px 4px 6px; }
+
+/* ── Shut down ────────────────────────────────────────────────────────── */
+
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 15000;
+  background: rgba(0, 0, 0, 0.35);
+  display: grid;
+  place-items: center;
+}
+
+.shutdown-dialog { min-width: 260px; }
+
+.shutdown {
+  position: fixed;
+  inset: 0;
+  z-index: 20000;
+  background: #000;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 34px;
+  padding: 20px;
+  text-align: center;
+}
+
+.shutdown-text {
+  margin: 0;
+  color: #ffa000;
+  font-family: "Courier New", Courier, monospace;
+  font-size: clamp(18px, 4.4vw, 34px);
+  line-height: 1.45;
+  text-shadow: 0 0 12px rgba(255, 160, 0, 0.45);
+}
+
+.shutdown-restart { min-width: 92px; }
+
+@media (max-width: 768px) {
+  .volume-popup { right: 0; }
+}

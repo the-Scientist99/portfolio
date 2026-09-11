@@ -119,6 +119,9 @@ Contact, and a Skills view rendered as the Device Manager.
 **Programs:** Notepad, Paint, Calculator, MS-DOS Prompt, Minesweeper, Media
 Player, Internet Explorer, Display Properties.
 
+**Shell:** a Start menu with Shut Down, a taskbar volume mixer, and a
+right-click menu on the desktop.
+
 The MS-DOS Prompt is a real shell over the same filesystem — `help`, `ls`,
 `cd`, `cat`, `open`, `skills`, `contact`, `resume`, plus tab completion and
 command history.
@@ -126,8 +129,14 @@ command history.
 Notepad and Paint files that visitors save persist in their own browser
 (`localStorage`) and show up in My Documents. Nothing is sent anywhere.
 
-The Media Player synthesises its chiptune with Web Audio oscillators, so
-there is no audio file in the repo. It never autoplays.
+All sound — the Media Player's chiptune, the startup chime, the error ding —
+is synthesised with Web Audio oscillators, so there is no audio file in the
+repo. One shared audio graph runs through the taskbar volume control, which
+remembers its level and mute state. Nothing autoplays: the chime waits for
+your first click, because browsers block audio before a user gesture.
+
+To ship silent instead, change the `muted` default in
+[`src/os/settings.tsx`](src/os/settings.tsx) to `true`.
 
 ---
 
@@ -168,6 +177,24 @@ ring, windows close with `Escape`, and Minesweeper cells can be flagged with
 `F` for anyone without a right mouse button.
 
 ---
+
+## Regenerating the social preview image
+
+`public/og.png` is what LinkedIn and Slack show when the link is shared. It is
+a real 1200x630 screenshot of the running app, not a mock-up. To refresh it
+after a visual change, run the dev server and capture it with headless Chrome:
+
+```bash
+"/Applications/Google Chrome.app/Contents/MacOS/Google Chrome" --headless=new --hide-scrollbars --virtual-time-budget=12000 --screenshot=public/og.png --window-size=1200,630 http://localhost:5173/
+```
+
+That lands on the boot screen. To capture the desktop with windows open, the
+repo history has a throwaway `public/__og.html` that seeds `sessionStorage`,
+loads the app in a same-origin iframe, and clicks a few icons before the
+screenshot. Delete it again afterwards — it is not part of the site.
+
+**The `og:image` URL in `index.html` is absolute.** If the site moves to a new
+domain, update it there or the preview breaks.
 
 ## Deploying
 

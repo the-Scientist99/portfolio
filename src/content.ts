@@ -21,6 +21,7 @@ export type IconName =
   | 'folder' | 'folderOpen' | 'textFile' | 'pdf' | 'image' | 'computer'
   | 'notepad' | 'paint' | 'calculator' | 'terminal' | 'mine' | 'media'
   | 'ie' | 'mail' | 'link' | 'recycle' | 'settings' | 'info'
+  | 'speaker' | 'speakerMuted' | 'shutdown' | 'refresh'
 
 export type Node =
   | { kind: 'folder'; icon?: IconName; children: Record<string, Node> }
@@ -102,6 +103,38 @@ ${'='.repeat(56)}
 Montenegrin ....................................... Native
 English ........................... Professional working
 Java ................................ Fluent, 3+ years   ;)
+`
+
+
+const HOBBIES = `HOBBIES
+${'='.repeat(56)}
+
+HIKING
+${'-'.repeat(56)}
+Mostly the Montenegrin mountains — Prokletije, Komovi, Durmitor.
+Snow-line treks in spring, long ridge days in summer. It is the
+one activity where the feedback loop is completely honest: you
+either get to the top or you turn around, and the mountain does
+not care how you felt about the plan.
+
+Also the only reliable way I have found to stop thinking about
+a bug. Something about five hours of walking uphill clears the
+stack.
+
+BASKETBALL
+${'-'.repeat(56)}
+Pickup games, mostly. I like that it is a sport where the
+individually best player does not automatically win — spacing
+and passing beat raw talent more often than people expect.
+
+Reasonable analogy for a codebase, if you want one.
+
+VIDEO GAMES
+${'-'.repeat(56)}
+Strategy and RPGs, the kind with systems deep enough to be worth
+poking at. I have a weakness for games that let you break them
+in ways the designers clearly did not intend — which is, more or
+less, the same instinct that makes integration work interesting.
 `
 
 const SYNERGYSUITE = `SOFTWARE ENGINEER — SYNERGYSUITE
@@ -263,20 +296,59 @@ export const filesystem: Record<string, Node> = {
       'readme.txt': { kind: 'text', body: ABOUT },
       'education.txt': { kind: 'text', body: EDUCATION },
       'languages.txt': { kind: 'text', body: LANGUAGES },
+      'hobbies.txt': { kind: 'text', body: HOBBIES },
       'Photos': {
         kind: 'folder',
         children: {
-          // TODO(emir): drop real images into public/assets/photos/ and
-          // point these at them. Delete the placeholders.
-          'placeholder-1.png': {
+          'portrait.jpg': {
             kind: 'image',
-            src: './assets/photos/placeholder-1.png',
-            caption: 'Replace me — public/assets/photos/',
+            src: './assets/photos/portrait.jpg',
+            caption: `${profile.name} — ${profile.role}`,
           },
-          'placeholder-2.png': {
+          'prokletije-ridge.jpg': {
             kind: 'image',
-            src: './assets/photos/placeholder-2.png',
-            caption: 'Replace me — public/assets/photos/',
+            src: './assets/photos/prokletije-ridge.jpg',
+            caption: 'Prokletije, looking across the range',
+          },
+          'plav-from-above.jpg': {
+            kind: 'image',
+            src: './assets/photos/plav-from-above.jpg',
+            caption: 'Lake Plav from the ridge above it',
+          },
+          'summit-flag.jpg': {
+            kind: 'image',
+            src: './assets/photos/summit-flag.jpg',
+            caption: 'Montenegrin flag at the top',
+          },
+          'peak-in-cloud.jpg': {
+            kind: 'image',
+            src: './assets/photos/peak-in-cloud.jpg',
+            caption: 'A peak taking its own weather personally',
+          },
+          'meadow-trail.jpg': {
+            kind: 'image',
+            src: './assets/photos/meadow-trail.jpg',
+            caption: 'Summer approach, single file through the meadow',
+          },
+          'winter-treeline.jpg': {
+            kind: 'image',
+            src: './assets/photos/winter-treeline.jpg',
+            caption: 'Spring snow still sitting in the treeline',
+          },
+          'frozen-lake.jpg': {
+            kind: 'image',
+            src: './assets/photos/frozen-lake.jpg',
+            caption: 'Break on a lake that had not thawed yet',
+          },
+          'river-canyon.jpg': {
+            kind: 'image',
+            src: './assets/photos/river-canyon.jpg',
+            caption: 'Canyon river, somewhere below the trail',
+          },
+          'road-to-the-trailhead.jpg': {
+            kind: 'image',
+            src: './assets/photos/road-to-the-trailhead.jpg',
+            caption: 'The drive out, which is half the trip',
           },
         },
       },

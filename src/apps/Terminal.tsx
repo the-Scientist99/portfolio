@@ -20,6 +20,7 @@ const HELP = `Available commands:
   CAT <file>        print a text file
   OPEN <app>        launch a program
   SKILLS            print the tech stack
+  HOBBIES           what I do when not at a keyboard
   CONTACT           email and links
   RESUME            download the resume
   DATE              current date and time
@@ -130,6 +131,12 @@ export function Terminal() {
       case 'skills':
         emit(skills.map((s) => `  ${s.group.padEnd(26)} ${s.items.join(', ')}`).join('\n') + '\n')
         break
+
+      case 'hobbies': {
+        const node = resolve('About Me/hobbies.txt')
+        emit(node?.kind === 'text' ? node.body : 'Not found.', node ? undefined : 'err')
+        break
+      }
 
       case 'contact':
         emit(`  Email     ${profile.email}\n  LinkedIn  ${profile.linkedinLabel}\n  Location  ${profile.location}\n`)

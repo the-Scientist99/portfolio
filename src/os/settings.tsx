@@ -1,9 +1,14 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react'
 import type { ReactNode } from 'react'
 import { load, save } from './storage'
+import { applyVolume } from './audio'
 
 export const WALLPAPERS = {
   teal: { label: 'Teal (none)', css: '#008080' },
+  ridge: {
+    label: 'Prokletije ridge (photo)',
+    css: "url('./assets/wallpapers/ridge.jpg') center / cover no-repeat",
+  },
   clouds: {
     label: 'Clouds',
     css: 'linear-gradient(#5aa9e6 0%, #9fd0f0 55%, #d8ecf8 100%)',
@@ -24,8 +29,12 @@ export type WallpaperId = keyof typeof WALLPAPERS
 type Settings = {
   crt: boolean
   wallpaper: WallpaperId
+  volume: number
+  muted: boolean
   setCrt: (on: boolean) => void
   setWallpaper: (id: WallpaperId) => void
+  setVolume: (v: number) => void
+  setMuted: (on: boolean) => void
 }
 
 const Ctx = createContext<Settings | null>(null)
@@ -34,12 +43,22 @@ function isWallpaper(v: unknown): v is WallpaperId {
   return typeof v === 'string' && v in WALLPAPERS
 }
 
+function asVolume(v: unknown): number {
+  return typeof v === 'number' && Number.isFinite(v)
+    ? Math.min(1, Math.max(0, v))
+    : 0.35
+}
+
 export function SettingsProvider({ children }: { children: ReactNode }) {
   const [crt, setCrtState] = useState<boolean>(() => load('settings.crt', true))
   const [wallpaper, setWallpaperState] = useState<WallpaperId>(() => {
     const stored = load<unknown>('settings.wallpaper', 'teal')
     return isWallpaper(stored) ? stored : 'teal'
   })
+  const [volume, setVolumeState] = useState<number>(
+    () => asVolume(load<unknown>('settings.volume', 0.35)),
+  )
+  const [muted, setMutedState] = useState<boolean>(() => load('settings.muted', false))
 
   // The CRT class lives on <html> so the fixed overlay and the desktop glow
   // can both key off one toggle.
@@ -48,6 +67,12 @@ export function SettingsProvider({ children }: { children: ReactNode }) {
     root.classList.toggle('crt-off', !crt)
     root.classList.toggle('crt-on', crt)
   }, [crt])
+
+  // Push the level into the audio graph. Harmless before one exists — the
+  // value is remembered and applied on creation.
+  useEffect(() => {
+    applyVolume(volume, muted)
+  }, [volume, muted])
 
   const setCrt = useCallback((on: boolean) => {
     setCrtState(on)
@@ -59,9 +84,23 @@ export function SettingsProvider({ children }: { children: ReactNode }) {
     try { save('settings.wallpaper', id) } catch { /* preference, not user data */ }
   }, [])
 
+  const setVolume = useCallback((v: number) => {
+    const clamped = asVolume(v)
+    setVolumeState(clamped)
+    try { save('settings.volume', clamped) } catch { /* preference, not user data */ }
+  }, [])
+
+  const setMuted = useCallback((on: boolean) => {
+    setMutedState(on)
+    try { save('settings.muted', on) } catch { /* preference, not user data */ }
+  }, [])
+
   const value = useMemo(
-    () => ({ crt, wallpaper, setCrt, setWallpaper }),
-    [crt, wallpaper, setCrt, setWallpaper],
+    () => ({
+      crt, wallpaper, volume, muted,
+      setCrt, setWallpaper, setVolume, setMuted,
+    }),
+    [crt, wallpaper, volume, muted, setCrt, setWallpaper, setVolume, setMuted],
   )
 
   return <Ctx.Provider value={value}>{children}</Ctx.Provider>

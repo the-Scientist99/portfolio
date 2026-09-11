@@ -3,6 +3,7 @@ import { Icon } from './icons'
 import { useWindows } from './windowStore'
 import { useSettings } from './settings'
 import { StartMenu } from './StartMenu'
+import { VolumePopup } from './VolumePopup'
 
 function Clock() {
   const [now, setNow] = useState(() => new Date())
@@ -26,14 +27,20 @@ function Clock() {
   )
 }
 
-export function Taskbar() {
+export function Taskbar({ onShutDown }: { onShutDown: () => void }) {
   const { windows, topZ, toggleMin } = useWindows()
-  const { crt, setCrt } = useSettings()
+  const { crt, setCrt, volume, muted } = useSettings()
   const [menuOpen, setMenuOpen] = useState(false)
+  const [volumeOpen, setVolumeOpen] = useState(false)
+
+  const silent = muted || volume === 0
 
   return (
     <>
-      {menuOpen && <StartMenu onClose={() => setMenuOpen(false)} />}
+      {menuOpen && (
+        <StartMenu onClose={() => setMenuOpen(false)} onShutDown={onShutDown} />
+      )}
+      {volumeOpen && <VolumePopup onClose={() => setVolumeOpen(false)} />}
 
       <div className="taskbar">
         <button
@@ -72,6 +79,18 @@ export function Taskbar() {
         <div className="tray">
           <button
             type="button"
+            className="tray-btn tray-volume"
+            aria-expanded={volumeOpen}
+            aria-haspopup="dialog"
+            onClick={() => setVolumeOpen((o) => !o)}
+            title={silent ? 'Volume (muted)' : `Volume ${Math.round(volume * 100)}%`}
+            aria-label={silent ? 'Volume, muted' : `Volume ${Math.round(volume * 100)} percent`}
+          >
+            <Icon name={silent ? 'speakerMuted' : 'speaker'} size={14} />
+          </button>
+
+          <button
+            type="button"
             className="tray-btn"
             onClick={() => setCrt(!crt)}
             title={crt ? 'Turn CRT effect off' : 'Turn CRT effect on'}
@@ -80,6 +99,7 @@ export function Taskbar() {
           >
             <Icon name="settings" size={14} />
           </button>
+
           <Clock />
         </div>
       </div>

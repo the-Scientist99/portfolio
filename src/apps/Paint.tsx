@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { writeUserFile } from '../os/fs'
 import { QuotaError } from '../os/storage'
+import { ding } from '../os/audio'
 
 const PALETTE = [
   '#000000', '#808080', '#800000', '#808000', '#008000', '#008080', '#000080', '#800080',
@@ -187,6 +188,7 @@ export function Paint() {
       })
       setStatus(`Saved to My Documents\\${filename}`)
     } catch (err) {
+      ding()
       setStatus(
         err instanceof QuotaError
           ? 'Save failed: not enough browser storage for this image.'

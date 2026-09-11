@@ -1,6 +1,7 @@
-import { useEffect, useRef } from 'react'
+import { useRef } from 'react'
 import { Icon } from './icons'
 import { useOpener } from './open'
+import { useDismissable } from './useDismissable'
 import { profile } from '../content'
 import type { AppId, IconName } from '../content'
 
@@ -8,6 +9,7 @@ type Item =
   | { kind: 'app'; appId: AppId; label: string; icon: IconName }
   | { kind: 'path'; path: string; label: string; icon: IconName }
   | { kind: 'href'; href: string; label: string; icon: IconName; download?: string }
+  | { kind: 'shutdown'; label: string; icon: IconName }
   | { kind: 'sep' }
 
 const ITEMS: Item[] = [
@@ -29,35 +31,22 @@ const ITEMS: Item[] = [
   { kind: 'href', href: `mailto:${profile.email}`, label: 'Email me', icon: 'mail' },
   { kind: 'href', href: profile.resume, label: 'Download resume', icon: 'pdf',
     download: 'Emir_Kardovic_Resume.pdf' },
+  { kind: 'sep' },
+  { kind: 'shutdown', label: 'Shut Down...', icon: 'shutdown' },
 ]
 
-export function StartMenu({ onClose }: { onClose: () => void }) {
+export function StartMenu({
+  onClose, onShutDown,
+}: { onClose: () => void; onShutDown: () => void }) {
   const { openApp, openPath } = useOpener()
   const ref = useRef<HTMLDivElement>(null)
 
-  // Close on outside pointer or Escape. Capture phase so a click on a desktop
-  // icon closes the menu and still reaches the icon.
-  useEffect(() => {
-    const onDown = (e: PointerEvent) => {
-      const el = ref.current
-      if (!el) return
-      const target = e.target as HTMLElement
-      if (el.contains(target) || target.closest('.start-btn')) return
-      onClose()
-    }
-    const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') onClose() }
-    document.addEventListener('pointerdown', onDown, true)
-    document.addEventListener('keydown', onKey)
-    ref.current?.querySelector<HTMLElement>('.start-item')?.focus()
-    return () => {
-      document.removeEventListener('pointerdown', onDown, true)
-      document.removeEventListener('keydown', onKey)
-    }
-  }, [onClose])
+  useDismissable(ref, onClose, '.start-btn')
 
   function activate(item: Item) {
     if (item.kind === 'app') openApp(item.appId)
     else if (item.kind === 'path') openPath(item.path)
+    else if (item.kind === 'shutdown') onShutDown()
     else if (item.kind === 'href') {
       const a = document.createElement('a')
       a.href = item.href
@@ -81,6 +70,7 @@ export function StartMenu({ onClose }: { onClose: () => void }) {
               type="button"
               className="start-item"
               role="menuitem"
+              autoFocus={i === 0}
               onClick={() => activate(item)}
             >
               <Icon name={item.icon} size={18} />

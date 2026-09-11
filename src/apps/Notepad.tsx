@@ -1,6 +1,7 @@
 import { useCallback, useRef, useState } from 'react'
 import { writeUserFile } from '../os/fs'
 import { QuotaError } from '../os/storage'
+import { ding } from '../os/audio'
 
 const GREETING = `Go ahead, type something.
 
@@ -23,6 +24,7 @@ export function Notepad({ body }: { body?: string }) {
       writeUserFile({ type: 'text', name: filename, body: text, saved: Date.now() })
       setStatus(`Saved to My Documents\\${filename}`)
     } catch (err) {
+      ding()
       setStatus(
         err instanceof QuotaError
           ? 'Save failed: not enough browser storage.'
