@@ -273,15 +273,24 @@
 
 .volume-label { font-weight: bold; }
 
-/* 98.css's `.is-vertical` is 150px tall by default and offsets itself with a
-   translateY(50%); shrink it and absorb the offset with margin so the popup
-   stays taskbar-sized. */
-.volume-slider.is-vertical {
+/* The slider's reserved space. The widget inside is positioned, not in flow,
+   because 98.css's `.is-vertical` paints well outside its own layout box. */
+.volume-slider-box {
+  position: relative;
+  width: 30px;
   height: 104px;
-  margin: 4px 0 -50px;
+  margin: 2px 0 5px;
 }
 
-.volume-slider.is-vertical > input[type='range'] {
+.volume-slider-box .is-vertical {
+  position: absolute;
+  left: 5px;
+  top: 0;
+  height: 104px;
+  margin: 0;
+}
+
+.volume-slider-box .is-vertical > input[type='range'] {
   width: 104px;
 }
 

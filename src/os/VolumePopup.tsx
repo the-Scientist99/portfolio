@@ -20,37 +20,41 @@ export function VolumePopup({ onClose }: { onClose: () => void }) {
     <div className="window volume-popup" ref={ref} role="group" aria-label="Volume">
       <div className="volume-label">Volume</div>
 
-      {/* 98.css ships its own vertical slider (`.is-vertical`), built on a
-          rotation rather than `writing-mode` — which its track and thumb
-          styling does not survive. Use the library's own mechanism. */}
-      <div className="is-vertical volume-slider">
-        <input
-          type="range"
-          min={0}
-          max={100}
-          step={1}
-          value={Math.round(volume * 100)}
-          aria-label="Volume level"
-          autoFocus
-          onChange={(e) => {
-            // Touching the slider is a user gesture, so it is a valid moment
-            // to start the audio graph.
-            ensure()
-            setVolume(Number(e.target.value) / 100)
-          }}
-        />
+      {/* 98.css's `.is-vertical` builds its slider from a rotate + translate,
+          so it paints half its height above its own layout box and cannot be
+          laid out in normal flow without overlapping what follows. The box
+          below holds the space; the widget itself is positioned inside it. */}
+      <div className="volume-slider-box">
+        <div className="is-vertical">
+          <input
+            type="range"
+            min={0}
+            max={100}
+            step={1}
+            value={Math.round(volume * 100)}
+            aria-label="Volume level"
+            autoFocus
+            onChange={(e) => {
+              // Touching the slider is a user gesture, so it is a valid
+              // moment to start the audio graph.
+              ensure()
+              setVolume(Number(e.target.value) / 100)
+            }}
+          />
+        </div>
       </div>
 
       <div className="volume-value">{muted ? '—' : `${Math.round(volume * 100)}`}</div>
 
-      <label className="volume-mute">
+      <div className="volume-mute">
         <input
           type="checkbox"
+          id="volume-mute"
           checked={muted}
           onChange={(e) => setMuted(e.target.checked)}
         />
-        Mute
-      </label>
+        <label htmlFor="volume-mute">Mute</label>
+      </div>
     </div>
   )
 }
