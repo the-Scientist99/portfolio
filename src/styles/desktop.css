@@ -1,0 +1,257 @@
+/* ── Desktop ──────────────────────────────────────────────────────────── */
+
+#desktop-root {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+  transform-origin: center center;
+}
+
+.desktop-surface {
+  position: absolute;
+  inset: 0 0 var(--taskbar-h) 0;
+  overflow: hidden;
+}
+
+.icon-grid {
+  position: absolute;
+  inset: 0;
+  padding: 6px 4px;
+  display: grid;
+  grid-auto-flow: column;
+  grid-template-rows: repeat(auto-fill, 76px);
+  grid-auto-columns: 84px;
+  gap: 2px;
+  align-content: start;
+  overflow: hidden;
+}
+
+.desk-icon {
+  all: unset;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  width: 84px;
+  padding: 5px 2px;
+  cursor: default;
+  text-align: center;
+  color: #fff;
+}
+
+.desk-icon .label {
+  padding: 1px 3px;
+  line-height: 1.25;
+  word-break: break-word;
+  text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.75);
+}
+
+.desk-icon[aria-pressed='true'] .label {
+  background: var(--title);
+  outline: 1px dotted #fff;
+  text-shadow: none;
+}
+
+.desk-icon[aria-pressed='true'] svg { filter: brightness(0.75) saturate(1.4); }
+.desk-icon:focus-visible .label { outline: 1px dotted #fff; }
+
+/* ── Windows ──────────────────────────────────────────────────────────── */
+
+.win {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  /* 98.css .window supplies the bevel + background. */
+}
+
+.win.dragging { will-change: left, top; }
+
+.win > .title-bar { cursor: default; flex: 0 0 auto; }
+.win.mobile > .title-bar { cursor: default; }
+
+.title-bar-text {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.win-body {
+  flex: 1 1 auto;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+/* 98.css `.window-body` has a margin; our apps manage their own padding. */
+.win .window-body.flush {
+  margin: 0;
+  flex: 1 1 auto;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.resize-grip {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  width: 16px;
+  height: 16px;
+  cursor: nwse-resize;
+  touch-action: none;
+  background:
+    linear-gradient(135deg, transparent 46%, var(--shadow) 46% 54%, transparent 54%),
+    linear-gradient(135deg, transparent 66%, var(--shadow) 66% 74%, transparent 74%);
+}
+
+.win-scroll {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow: auto;
+}
+
+/* ── Taskbar ──────────────────────────────────────────────────────────── */
+
+.taskbar {
+  position: absolute;
+  left: 0; right: 0; bottom: 0;
+  height: var(--taskbar-h);
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  padding: 2px;
+  background: var(--silver);
+  border-top: 1px solid var(--light);
+  z-index: 10000;
+}
+
+.start-btn { font-weight: bold; display: flex; align-items: center; gap: 4px; min-width: 58px; }
+
+.task-divider {
+  width: 2px;
+  align-self: stretch;
+  margin: 1px 2px;
+  border-left: 1px solid var(--shadow);
+  border-right: 1px solid var(--light);
+}
+
+.task-buttons {
+  flex: 1 1 auto;
+  display: flex;
+  gap: 3px;
+  overflow: hidden;
+}
+
+.task-btn {
+  flex: 0 1 150px;
+  min-width: 40px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  overflow: hidden;
+  text-align: left;
+  justify-content: flex-start;
+}
+
+.task-btn span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.tray {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 1px 6px;
+  border-top: 1px solid var(--shadow);
+  border-left: 1px solid var(--shadow);
+  border-bottom: 1px solid var(--light);
+  border-right: 1px solid var(--light);
+}
+
+.tray-btn { all: unset; display: flex; cursor: default; padding: 1px; }
+.tray-btn:focus-visible { outline: 1px dotted #000; }
+
+/* ── Start menu ───────────────────────────────────────────────────────── */
+
+.start-menu {
+  position: absolute;
+  left: 2px;
+  bottom: var(--taskbar-h);
+  z-index: 10001;
+  display: flex;
+  padding: 2px;
+  min-width: 200px;
+}
+
+.start-rail {
+  width: 22px;
+  background: linear-gradient(var(--title-inactive), var(--title));
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  flex: 0 0 auto;
+}
+
+.start-rail span {
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  color: #fff;
+  font-size: 15px;
+  font-weight: bold;
+  letter-spacing: 1px;
+  padding: 6px 0;
+  white-space: nowrap;
+}
+
+.start-items { flex: 1 1 auto; display: flex; flex-direction: column; padding: 1px; }
+
+.start-item {
+  all: unset;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 5px 22px 5px 6px;
+  cursor: default;
+  white-space: nowrap;
+}
+
+.start-item:hover, .start-item:focus-visible {
+  background: var(--title);
+  color: #fff;
+  outline: none;
+}
+
+.start-sep {
+  height: 2px;
+  margin: 3px 2px;
+  border-top: 1px solid var(--shadow);
+  border-bottom: 1px solid var(--light);
+}
+
+/* ── Mobile ───────────────────────────────────────────────────────────── */
+
+@media (max-width: 768px) {
+  :root { --taskbar-h: 34px; }
+
+  .icon-grid {
+    grid-auto-flow: row;
+    grid-template-columns: repeat(auto-fill, minmax(76px, 1fr));
+    grid-template-rows: none;
+    grid-auto-rows: 78px;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .desk-icon { width: 100%; }
+
+  .task-btn { flex: 1 1 0; }
+
+  .start-menu { left: 0; right: 0; min-width: 0; }
+}
