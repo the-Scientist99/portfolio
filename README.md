@@ -119,6 +119,10 @@ Contact, and a Skills view rendered as the Device Manager.
 **Programs:** Notepad, Paint, Calculator, MS-DOS Prompt, Minesweeper, Media
 Player, Internet Explorer, Display Properties.
 
+Minesweeper flags a cell three ways, so every input has one: right-click,
+the `F` key, or a long press on touch. Cells grow to 28px where the primary
+pointer is coarse, because a 400ms hold on an 18px target is a coin flip.
+
 **Shell:** a Start menu with Shut Down, a taskbar volume mixer, and a
 right-click menu on the desktop.
 

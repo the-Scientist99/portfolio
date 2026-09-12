@@ -425,7 +425,22 @@
 
 /* ── Minesweeper ──────────────────────────────────────────────────────── */
 
-.mine-app { padding: 5px; display: flex; flex-direction: column; gap: 5px; height: 100%; }
+.mine-app {
+  --cell-size: 18px;
+  padding: 5px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  height: 100%;
+}
+
+/* 18px is a fine mouse target and a poor finger one — and hold-to-flag needs
+   the finger to stay on the cell for 400ms. Grow the cells where the primary
+   input is touch. */
+@media (pointer: coarse) {
+  .mine-app { --cell-size: 28px; }
+  .cell { font-size: 15px; }
+}
 
 .mine-hud {
   display: flex;
@@ -476,8 +491,14 @@
 
 .cell {
   all: unset;
-  width: 18px;
-  height: 18px;
+  /* Long-press flags on touch, so suppress the OS callout and text selection
+     that would otherwise hijack the gesture. */
+  -webkit-touch-callout: none;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  width: var(--cell-size);
+  height: var(--cell-size);
   display: grid;
   place-items: center;
   font-family: "Courier New", monospace;
