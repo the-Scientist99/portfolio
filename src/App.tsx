@@ -12,6 +12,9 @@ import { SettingsProvider, WALLPAPERS, useSettings } from './os/settings'
 import { WindowProvider, useWindows } from './os/windowStore'
 import { useIsMobile } from './os/useIsMobile'
 import { chime, ensure, isRunning } from './os/audio'
+// The `/react` entry, not `/next` — this is a Vite app, and the Next entry
+// imports next/navigation.
+import { Analytics } from '@vercel/analytics/react'
 
 const BOOTED_KEY = 'portfolio.booted'
 const CHIMED_KEY = 'portfolio.chimed'
@@ -157,6 +160,7 @@ export default function App() {
         </>
       )}
       <CrtOverlay />
+      <Analytics />
     </SettingsProvider>
   )
 }

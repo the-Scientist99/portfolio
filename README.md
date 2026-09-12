@@ -182,6 +182,37 @@ ring, windows close with `Escape`, and Minesweeper cells can be flagged with
 
 ---
 
+## How this site is findable
+
+The content lives inside a simulated desktop, so a crawler that does not open
+windows would see eight icon labels and nothing else. Two things fix that, and
+both are generated from `src/content.ts` so they cannot drift from what the
+site actually says:
+
+- **Static content in the shipped HTML.** [`scripts/seo.ts`](scripts/seo.ts)
+  turns the filesystem tree into real markup, and a small Vite plugin injects
+  it into `#root`. React clears that container when it mounts, so visitors
+  with JavaScript never see it — and visitors without it get a readable page
+  instead of a blank one. It is not hidden text: it is the same content,
+  genuinely present in the document.
+- **`Person` structured data** (JSON-LD) in the head, so a search engine can
+  tell the page is about a specific human rather than guessing.
+
+To see what a crawler sees:
+
+```bash
+npm run build && node -e "const h=require('fs').readFileSync('dist/index.html','utf8');console.log(h.replace(/<[^>]+>/g,' ').replace(/\s+/g,' '))"
+```
+
+`public/robots.txt` and `public/sitemap.xml` carry the site URL. **If the
+domain changes, update it there, in the `canonical` link, and in the `og:`
+tags in `index.html`** — those are all absolute by necessity.
+
+Traffic is measured with Vercel Web Analytics (`<Analytics />` in
+[`src/App.tsx`](src/App.tsx)). It is cookieless, so there is no consent banner,
+and it only reports in production — in development it logs to the console
+instead.
+
 ## Regenerating the social preview image
 
 `public/og.png` is what LinkedIn and Slack show when the link is shared. It is

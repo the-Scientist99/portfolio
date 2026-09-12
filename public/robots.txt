@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://emir-kardovic.vercel.app/sitemap.xml

@@ -57,3 +57,36 @@ button.plain {
 /* Text that users should be able to select and copy: contact details,
    file bodies, terminal output. */
 .selectable { user-select: text; cursor: auto; }
+
+/* ── Static fallback (see scripts/seo.ts) ─────────────────────────────────
+   The build injects the site's content into #root as real markup. React
+   clears it on mount, so this styling only ever applies to visitors whose
+   JavaScript has not loaded — and to anything else reading the document.
+   #root is overflow:hidden for the desktop, so this scrolls itself. */
+
+.seo-fallback {
+  height: 100%;
+  overflow-y: auto;
+  box-sizing: border-box;
+  padding: 2.5rem 1.5rem 4rem;
+  background: #fff;
+  color: #111;
+  font-family: system-ui, -apple-system, "Segoe UI", Arial, sans-serif;
+  font-size: 16px;
+  line-height: 1.6;
+  -webkit-font-smoothing: auto;
+  user-select: text;
+  cursor: auto;
+}
+
+.seo-fallback > * { max-width: 44rem; margin-left: auto; margin-right: auto; }
+.seo-fallback h1 { font-size: 2rem; margin: 0 0 .25rem; }
+.seo-fallback h2 { font-size: 1.4rem; margin: 2rem 0 .5rem; border-bottom: 1px solid #ddd; padding-bottom: .25rem; }
+.seo-fallback h3 { font-size: 1.1rem; margin: 1.5rem 0 .35rem; }
+.seo-fallback p { margin: .6rem 0; }
+.seo-fallback ul { margin: .6rem 0; padding-left: 1.4rem; }
+.seo-fallback li { margin: .3rem 0; }
+.seo-fallback a { color: #0645ad; }
+.seo-fallback figure { margin: 1rem 0; }
+.seo-fallback img { max-width: 320px; height: auto; }
+.seo-fallback .tech { font-family: ui-monospace, Menlo, monospace; font-size: .9rem; color: #060; }
