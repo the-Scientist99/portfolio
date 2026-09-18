@@ -145,7 +145,7 @@ export function Terminal() {
       case 'resume': {
         const a = document.createElement('a')
         a.href = profile.resume
-        a.download = 'Emir_Kardovic_Resume.pdf'
+        a.download = 'Emir_Kardovic_CV.pdf'
         a.click()
         emit('Downloading resume...\n')
         break

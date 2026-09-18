@@ -37,9 +37,8 @@ export const profile = {
   role: 'Backend Software Engineer',
   location: 'Podgorica, Montenegro',
   email: 'emirbest1999@gmail.com',
-  // The handle contains 'ć'; the href must be percent-encoded.
-  linkedinLabel: 'linkedin.com/in/emir-kardović-15143a1b0',
-  linkedinHref: 'https://www.linkedin.com/in/emir-kardovi%C4%87-15143a1b0',
+  linkedinLabel: 'linkedin.com/in/emir-kardovic',
+  linkedinHref: 'https://www.linkedin.com/in/emir-kardovic/',
   resume: './assets/resume.pdf',
 } as const
 
@@ -49,14 +48,19 @@ export const skills: { group: string; items: string[] }[] = [
   { group: 'Frameworks', items: ['Spring Boot'] },
   {
     group: 'Cloud (AWS)',
-    items: ['SQS', 'SNS', 'S3', 'EC2', 'ECS', 'Lambda', 'CloudWatch'],
+    items: ['SQS', 'SNS', 'ECS', 'S3', 'CloudWatch'],
   },
   { group: 'Databases', items: ['MySQL'] },
   {
     group: 'Architecture and APIs',
-    items: ['Microservices', 'Event-driven design', 'REST APIs'],
+    items: [
+      'Microservices',
+      'Event-Driven Architecture',
+      'System Integration',
+      'REST APIs',
+    ],
   },
-  { group: 'Tools', items: ['Git', 'Bitbucket', 'Docker'] },
+  { group: 'Tools', items: ['Git', 'Bitbucket'] },
   { group: 'AI-assisted development', items: ['Claude Code', 'Gemini', 'Junie'] },
 ]
 
@@ -66,25 +70,26 @@ ${'='.repeat(56)}
 ${profile.name}
 ${profile.role} — ${profile.location}
 
-Backend software engineer with 3+ years building and scaling Java
-services for a restaurant back-office SaaS platform.
+Backend engineer with nearly 4 years building Java services in
+production for a multi-tenant restaurant back-office SaaS —
+4,000+ active POS sites, ~900,000 checks a day.
 
-I work on the unglamorous half of software: the integrations that have
-to be right every single time. Point-of-sale systems that speak seven
-different dialects of "a sale happened". Financial data that has to
-reconcile. Event pipelines that cannot drop a message at 2am on a
-Saturday, because Saturday at 2am is exactly when a restaurant chain
-is busiest.
+I work on the unglamorous half of software: the integrations that
+have to be right every single time. Point-of-sale systems that
+speak sixteen different dialects of "a sale happened". Financial
+data that has to reconcile. Event pipelines that cannot drop a
+message at 2am on a Saturday, because Saturday at 2am is exactly
+when a restaurant chain is busiest.
 
 WHAT I FOCUS ON
 ${'-'.repeat(56)}
 
   * Third-party POS and financial-system integrations
-  * Event-driven workflows on AWS (SQS, SNS, Lambda)
+  * Event-driven workflows on AWS (SQS, SNS)
   * Breaking monoliths into services that can be deployed and
     debugged independently
-  * Production incident diagnosis — reading CloudWatch until the
-    story makes sense
+  * Production defect investigation — reading CloudWatch until
+    the story makes sense
 
 Currently at SynergySuite. Based in Podgorica, Montenegro.
 `
@@ -92,7 +97,12 @@ Currently at SynergySuite. Based in Podgorica, Montenegro.
 const EDUCATION = `EDUCATION
 ${'='.repeat(56)}
 
-University of Montenegro                                     2021
+University of Montenegro                           2021 - 2023
+M.Sc. studies, Computer Software Engineering
+Coursework completed, thesis pending
+Podgorica, Montenegro
+
+University of Montenegro                           2018 - 2021
 B.Sc. in Computer Software Engineering
 Podgorica, Montenegro
 `
@@ -101,8 +111,8 @@ const LANGUAGES = `LANGUAGES
 ${'='.repeat(56)}
 
 Montenegrin ....................................... Native
-English ........................... Professional working
-Java ................................ Fluent, 3+ years   ;)
+English ................................................. C1
+Java ................................ Fluent, ~4 years   ;)
 `
 
 
@@ -142,34 +152,42 @@ ${'='.repeat(56)}
 
 Podgorica, Montenegro                  January 2023 – Present
 
-* Built integrations with third-party point-of-sale (POS) and
-  financial systems including CBS NorthStar, Toast, and Qu to
-  synchronize sales, inventory, transaction, and employee-management
-  data for enterprise restaurant clients
+* Built and own the CBS NorthStar POS integration end to end,
+  delivered in ~2 months and now in rollout — menu and inventory
+  sync from the POS, employee records written back out to it, and
+  sales ingestion covering POS reads, checks, sales lines and
+  payments
+
+* Worked across 15 further POS integrations including Toast and
+  Qu, shipping features and defect fixes against vendor APIs
+  differing in auth scheme, data model and delivery method
 
 * Developed and maintained backend Java and Spring Boot services
-  powering a restaurant back-office platform that unifies POS and
-  financial-operations data
+  on AWS for a multi-tenant restaurant back-office platform —
+  4,000+ active POS sites, ~900,000 checks processed a day
 
-* Designed asynchronous, event-driven workflows using AWS SQS and
-  SNS, along with scheduled and batch jobs, to process high-volume
-  POS data reliably
+* Designed asynchronous, event-driven workflows on AWS SQS and
+  SNS, with scheduled and batch jobs, to process high-volume POS
+  data reliably
 
-* Migrated legacy monolithic code to a microservice architecture,
-  improving deployability, fault isolation, and maintainability of
-  core services
+* Moved POS processing out of the monolith into a standalone
+  microservice, cutting processing time by 20% and improving
+  deployability and fault isolation; contributed to further
+  extractions as the platform decomposed
 
-* Diagnosed and resolved production incidents across AWS-hosted
-  services, using CloudWatch metrics and logs to identify root
-  causes and restore service
+* Shipped features and defect fixes in financial reporting: the
+  POS sales and payments feeding every outlet's daily summary,
+  and cashsheet generation for the ~1,000 locations with the
+  setting enabled
 
-* Deployed and operated containerized services with Docker on
-  AWS ECS, Lambda, and S3
+* Investigated and resolved production defects across AWS-hosted
+  services, using CloudWatch metrics and logs to trace root
+  causes
 
 ${'-'.repeat(56)}
 TECHNOLOGIES
-Java, Spring Boot, AWS (SQS, SNS, S3, EC2, ECS, Lambda,
-CloudWatch), MySQL, Docker, Git, Bitbucket, REST APIs
+Java, Spring Boot, AWS (SQS, SNS, ECS, S3, CloudWatch), MySQL,
+Git, Bitbucket, REST APIs
 `
 
 const CONTACT = `CONTACT
@@ -187,20 +205,36 @@ Fastest way to reach me is email.
 
 const POS_INTEGRATIONS = `
 <h1>POS &amp; Financial System Integrations</h1>
-<p class="lede">Making seven vendors agree on what a sale is.</p>
+<p class="lede">Making sixteen vendors agree on what a sale is.</p>
 
 <h2>The problem</h2>
 <p>An enterprise restaurant group does not run one point-of-sale system.
 It runs whatever each acquired brand was already running. The back-office
 platform has to present one coherent view of sales, inventory,
-transactions, and employee data across all of them.</p>
+transactions, and employee data across all of them — at
+<b>4,000+ active POS sites</b> processing roughly
+<b>900,000 checks a day</b>.</p>
 
 <h2>What I built</h2>
-<p>Integrations against <b>CBS NorthStar</b>, <b>Toast</b>, and <b>Qu</b>,
-each with its own API shape, auth model, pagination behaviour, and
-opinion about time zones. Every integration normalizes into the
-platform's internal domain model, so everything downstream — reporting,
-inventory reconciliation, labour cost — stays vendor-agnostic.</p>
+<p>I built the <b>CBS NorthStar</b> integration end to end and own it —
+about two months including testing, now in rollout. Beyond that I have
+worked across <b>15 further POS integrations</b>, including
+<b>Toast</b> and <b>Qu</b>, shipping features and defect fixes against
+vendor APIs that differ in auth scheme, data model and delivery method.</p>
+
+<h2>The part people underestimate: it goes both ways</h2>
+<p>Most integration work is read-only — you pull data out of a system and
+leave it alone. This is not that.</p>
+<ul>
+  <li><b>In from the POS:</b> menus and inventory, plus sales ingestion
+  covering POS reads, checks, sales lines and payments.</li>
+  <li><b>Back out to the POS:</b> employee records, written into the
+  vendor's system.</li>
+</ul>
+<p>Writing into someone else's point-of-sale is a materially harder
+problem than reading from it. A bad read shows a wrong number on a
+report. A bad write corrupts the system a restaurant is actively
+ringing sales on. The tolerance for error is not the same.</p>
 
 <h2>What made it hard</h2>
 <ul>
@@ -210,7 +244,7 @@ inventory reconciliation, labour cost — stays vendor-agnostic.</p>
   <li><b>Reconciliation is unforgiving.</b> Financial data either ties
   out or it does not. There is no "mostly correct" sales total.</li>
   <li><b>Vendors change things.</b> Integrations need to fail loudly and
-  in one place, not quietly and in forty.</li>
+  in one place, not quietly and in sixteen.</li>
 </ul>
 
 <p class="tech">Java &middot; Spring Boot &middot; REST APIs &middot; MySQL</p>
@@ -221,10 +255,11 @@ const EVENT_PIPELINE = `
 <p class="lede">High-volume restaurant data, processed without dropping any of it.</p>
 
 <h2>The shape of the load</h2>
-<p>POS data does not arrive evenly. It arrives in a wall at close of
-business, across every location, at once. Synchronous processing either
-times out or holds a connection open long enough to become somebody
-else's problem.</p>
+<p>POS data does not arrive evenly. Across <b>4,000+ active sites</b> it
+adds up to roughly <b>900,000 checks a day</b>, and it arrives in a wall
+at close of business, across every location, at once. Synchronous
+processing either times out or holds a connection open long enough to
+become somebody else's problem.</p>
 
 <h2>The design</h2>
 <p>Asynchronous, event-driven workflows built on <b>AWS SQS</b> and
@@ -243,7 +278,7 @@ no webhook for.</p>
   costs a subscription, not a refactor.</li>
 </ul>
 
-<p class="tech">AWS SQS &middot; SNS &middot; Lambda &middot; CloudWatch &middot; Java &middot; Spring Boot</p>
+<p class="tech">AWS SQS &middot; SNS &middot; CloudWatch &middot; Java &middot; Spring Boot</p>
 `
 
 const MONOLITH = `
@@ -256,15 +291,24 @@ inventory logic requires redeploying the billing code. Then it is a
 deployment bottleneck, a blast radius, and a reason nobody wants to
 touch anything on a Friday.</p>
 
+<h2>The piece I moved</h2>
+<p>I took <b>POS processing</b> out of the monolith and into a standalone
+microservice. It was a good first candidate: high volume, a clear domain
+boundary, and the part of the system under the most load. Moving it
+<b>cut processing time by 20%</b>.</p>
+<p>Since then I have contributed to further extractions as the platform
+has continued to decompose — but the POS service is the one I moved.</p>
+
 <h2>The approach</h2>
-<p>Incremental extraction of core services out of legacy monolithic
-code. Not a rewrite — a rewrite is how you spend eighteen months
-arriving at the same bugs. Seams were identified where the domain
-already had natural boundaries, and services were carved out along
-them one at a time, with the monolith still serving traffic.</p>
+<p>Incremental extraction, not a rewrite — a rewrite is how you spend
+eighteen months arriving at the same bugs. Seams were identified where
+the domain already had natural boundaries, and services were carved out
+along them one at a time, with the monolith still serving traffic.</p>
 
 <h2>What improved</h2>
 <ul>
+  <li><b>Throughput.</b> 20% faster POS processing, on the path that
+  carries the most volume.</li>
   <li><b>Deployability.</b> Services ship on their own schedule.</li>
   <li><b>Fault isolation.</b> One service degrading no longer takes the
   platform with it.</li>
@@ -273,12 +317,11 @@ them one at a time, with the monolith still serving traffic.</p>
 </ul>
 
 <h2>Operating it</h2>
-<p>Containerized with <b>Docker</b>, running on <b>AWS ECS</b> with
-<b>Lambda</b> and <b>S3</b> alongside. When something breaks in
-production, <b>CloudWatch</b> metrics and logs are where the
+<p>Running on <b>AWS ECS</b> with <b>S3</b> alongside. When something
+breaks in production, <b>CloudWatch</b> metrics and logs are where the
 investigation starts.</p>
 
-<p class="tech">Java &middot; Spring Boot &middot; Docker &middot; AWS ECS &middot; Lambda &middot; S3 &middot; CloudWatch</p>
+<p class="tech">Java &middot; Spring Boot &middot; AWS ECS &middot; S3 &middot; CloudWatch</p>
 `
 
 // TODO(emir): add side projects here. Copy one of the blocks above,

@@ -30,7 +30,7 @@ const ITEMS: Item[] = [
   { kind: 'app', appId: 'displayprops', label: 'Settings', icon: 'settings' },
   { kind: 'href', href: `mailto:${profile.email}`, label: 'Email me', icon: 'mail' },
   { kind: 'href', href: profile.resume, label: 'Download resume', icon: 'pdf',
-    download: 'Emir_Kardovic_Resume.pdf' },
+    download: 'Emir_Kardovic_CV.pdf' },
   { kind: 'sep' },
   { kind: 'shutdown', label: 'Shut Down...', icon: 'shutdown' },
 ]

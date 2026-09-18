@@ -7,7 +7,7 @@ export function PdfViewer({ src }: { src: string }) {
   return (
     <div className="window-body flush">
       <div className="explorer-toolbar">
-        <a href={src} download="Emir_Kardovic_Resume.pdf">
+        <a href={src} download="Emir_Kardovic_CV.pdf">
           <button type="button">Download PDF</button>
         </a>
         <a href={src} target="_blank" rel="noreferrer">
