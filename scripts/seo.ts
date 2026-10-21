@@ -30,7 +30,7 @@ function escapeHtml(s: string): string {
  */
 const PROPER_NOUNS = [
   'SynergySuite', 'CBS NorthStar', 'CloudWatch', 'MySQL', 'AWS', 'SQS', 'SNS',
-  'ECS', 'EC2', 'POS', 'REST', 'APIs', 'API', 'SaaS', 'SQL',
+  'ECS', 'Lambda', 'POS', 'REST', 'APIs', 'API', 'SaaS', 'SQL',
 ]
 
 /** ALL-CAPS shouts on a normal web page; title case reads as a heading. */
@@ -204,7 +204,6 @@ export function renderJsonLd(): string {
       addressLocality: 'Podgorica',
       addressCountry: 'ME',
     },
-    worksFor: { '@type': 'Organization', name: 'SynergySuite' },
     alumniOf: {
       '@type': 'CollegeOrUniversity',
       name: 'University of Montenegro',

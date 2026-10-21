@@ -48,7 +48,7 @@ export const skills: { group: string; items: string[] }[] = [
   { group: 'Frameworks', items: ['Spring Boot'] },
   {
     group: 'Cloud (AWS)',
-    items: ['SQS', 'SNS', 'ECS', 'S3', 'CloudWatch'],
+    items: ['SQS', 'SNS', 'ECS', 'Lambda', 'S3', 'CloudWatch'],
   },
   { group: 'Databases', items: ['MySQL'] },
   {
@@ -91,7 +91,8 @@ ${'-'.repeat(56)}
   * Production defect investigation — reading CloudWatch until
     the story makes sense
 
-Currently at SynergySuite. Based in Podgorica, Montenegro.
+Previously at SynergySuite (2023 – 2026). Based in Podgorica,
+Montenegro.
 `
 
 const EDUCATION = `EDUCATION
@@ -99,7 +100,7 @@ ${'='.repeat(56)}
 
 University of Montenegro                           2021 - 2023
 M.Sc. studies, Computer Software Engineering
-Coursework completed, thesis pending
+Coursework completed, thesis in progress
 Podgorica, Montenegro
 
 University of Montenegro                           2018 - 2021
@@ -150,13 +151,18 @@ less, the same instinct that makes integration work interesting.
 const SYNERGYSUITE = `SOFTWARE ENGINEER — SYNERGYSUITE
 ${'='.repeat(56)}
 
-Podgorica, Montenegro                  January 2023 – Present
+Podgorica, Montenegro             January 2023 – September 2026
 
-* Built and own the CBS NorthStar POS integration end to end,
-  delivered in ~2 months and now in rollout — menu and inventory
-  sync from the POS, employee records written back out to it, and
-  sales ingestion covering POS reads, checks, sales lines and
-  payments
+* Built and owned the CBS NorthStar POS integration end to end —
+  menu and inventory sync from the POS, employee records written
+  back out to it, and sales ingestion covering POS reads, checks,
+  sales lines and payments
+
+* Delivered it in ~2 months using Claude to analyze NorthStar's
+  API and documentation, map their DTOs to our domain model, plan
+  the fetch-and-mapping flow, and draft unit and integration tests
+  that confirmed the mapping, while owning the final design and
+  code
 
 * Worked across 15 further POS integrations including Toast and
   Qu, shipping features and defect fixes against vendor APIs
@@ -180,14 +186,15 @@ Podgorica, Montenegro                  January 2023 – Present
   and cashsheet generation for the ~1,000 locations with the
   setting enabled
 
-* Investigated and resolved production defects across AWS-hosted
-  services, using CloudWatch metrics and logs to trace root
-  causes
+* Investigated and fixed production defects across the
+  integration pipelines, from vendor-side failures to data landing
+  incorrectly in the platform, using CloudWatch logs and metrics
+  and MySQL analysis of high-volume sales and payment tables
 
 ${'-'.repeat(56)}
 TECHNOLOGIES
-Java, Spring Boot, AWS (SQS, SNS, ECS, S3, CloudWatch), MySQL,
-Git, Bitbucket, REST APIs
+Java, Spring Boot, AWS (SQS, SNS, ECS, Lambda, S3, CloudWatch),
+MySQL, Git, Bitbucket, REST APIs, Claude
 `
 
 const CONTACT = `CONTACT
@@ -216,8 +223,11 @@ transactions, and employee data across all of them — at
 <b>900,000 checks a day</b>.</p>
 
 <h2>What I built</h2>
-<p>I built the <b>CBS NorthStar</b> integration end to end and own it —
-about two months including testing, now in rollout. Beyond that I have
+<p>I built the <b>CBS NorthStar</b> integration end to end and owned it —
+about two months including testing. I used Claude to analyze NorthStar's
+API and documentation, map their DTOs to our domain model, plan the
+fetch-and-mapping flow, and draft the unit and integration tests that
+confirmed the mapping; the final design and code were mine. Beyond that I
 worked across <b>15 further POS integrations</b>, including
 <b>Toast</b> and <b>Qu</b>, shipping features and defect fixes against
 vendor APIs that differ in auth scheme, data model and delivery method.</p>
@@ -296,8 +306,8 @@ touch anything on a Friday.</p>
 microservice. It was a good first candidate: high volume, a clear domain
 boundary, and the part of the system under the most load. Moving it
 <b>cut processing time by 20%</b>.</p>
-<p>Since then I have contributed to further extractions as the platform
-has continued to decompose — but the POS service is the one I moved.</p>
+<p>After that I contributed to further extractions as the platform
+continued to decompose — but the POS service is the one I moved.</p>
 
 <h2>The approach</h2>
 <p>Incremental extraction, not a rewrite — a rewrite is how you spend
